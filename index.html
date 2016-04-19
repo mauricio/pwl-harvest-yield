@@ -43,7 +43,7 @@
 
 				<section>
 					<h1>Harvest, Yield, and Scalable Tolerant Systems</h1>
-					<h3>The CAP theorem</h3>
+					<h3>by Armando Fox and Eric Brewer</h3>
 					<p>
 						<small><a href="http://mauricio.github.com">Maurício Linhares</a> / <a href="http://twitter.com/mauricio">@mauriciojr</a></small>
 					</p>
@@ -64,11 +64,276 @@
 
 				<section>
 					<h1>
-						They are hard to understand and evaluate
+						They break. A lot. All the time.
 					</h1>
 				</section>
 
-				<section data-background="images/will-it-scale.png">
+				<section>
+					<h1>
+						The <strong>CAP theorem</strong> is the main source of vocabulary for defining distributed systems.
+					</h1>
+				</section>
+
+				<section>
+					<h1>
+						But the "harvest and yield" solution presented is actually the main topic of the paper. Not the CAP theorem.
+					</h1>
+				</section>
+
+				<section>
+					<h1>
+						1. Motivation, Hypothesis, Relevance
+					</h1>
+					<p>
+						Failures will happen, no matter what you do, so learn how to deal with them while still being available most of the time.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						2. Related Work and the CAP Principle
+					</h1>
+					<ul>
+						<li>Strong <strong>C</strong>onsistency</li>
+						<li>High <strong>A</strong>vailability</li>
+						<li><strong>P</strong>artition tolerance</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>
+						Strong consistency (C)
+					</h1>
+					<p>
+						ACID (Atomicity, Consistency, Isolation, Durability) level guarantees for the inclusions and updates to the data.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						High availability (A)
+					</h1>
+					<p>
+						Some data can always be accessed.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Partition tolerance (P)
+					</h1>
+					<p>
+						The system continues to function even if parts of it can't communicate between each other.
+					</p>
+				</section>
+
+				<section data-background="images/cap-principles.png">
+				</section>
+
+				<section>
+					<h1>
+						You can't provide all 3 at the same time
+					</h1>
+					<p>
+						You have to pick 2 and work around the other.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						CA but not P
+					</h1>
+					<p>
+						Most distributed databases. MongoDB, ElasticSearch, Redis and others, all fall into this category. If you get a network partition, the smaller side of the partition stops working as it won't be able to elect a master.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						CP but not A
+					</h1>
+					<p>
+						The system goes into a read-only (or unavailable) mode to prevent inconsistencies when the partition heals.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						AP but not C
+					</h1>
+					<p>
+						The way most caches work (like Memcached or Redis) or distributed message queues (like Amazon SQS). Consistency is not guaranteed but it will usually provide an answer (maybe old or incomplete) even during partition events.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Weak or eventual consistency to the rescue
+					</h1>
+					<p>
+						AP systems are the most common solution for actual distributed systems as downtime is not acceptable and failures will happen (and cause partitions) all the time. Consistency is the most common victim of distributed systems.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						3. Harvest, Yield, and the CAP Principle
+					</h1>
+					<p>
+						The meat
+					</p>
+				</section>
+
+				<section>
+					<img src="images/trade-off.png"/>
+				</section>
+
+				<section>
+					<h1>
+						Yield
+					</h1>
+					<p>
+						The probability of completing a request. How many 9's of availability can your system provide?
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Harvest
+					</h1>
+					<p>
+						How complete is the answer that you are providing to your user?
+					</p>
+				</section>
+
+				<section data-background="images/farmville.png">
+				</section>
+
+				<section>
+					<h1>
+						Redefine what "correct behavior" means for your system
+					</h1>
+					<p>
+						Define your systems in terms of how you can degrade harvest or yield to fit it's usage and your customer's needs.
+					</p>
+					<p>
+						Check <a href="http://tinyurl.com/yjxzqlk">http://tinyurl.com/yjxzqlk</a> for a full Farmville writeup.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						4. Strategy 1: Trading Harvest for Yield — Probabilistic Availability
+					</h1>
+					<p>
+						Is it better to show some search results or none?
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						All distributed systems are probabilistic
+					</h1>
+					<p>
+						There is always a > 0% chance that something is broken since the network is based on best effort delivery.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						I said best effort
+					</h1>
+					<p>
+						<img src="images/networking.jpeg"/>
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Embrace the probabilities
+					</h1>
+					<p>
+						What are your data hot spots? Can you replicate them to provide better harvest? Can you distribute your replicas across availability zones so that one zone failing does not make reduce harvest drastically?
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						5. Strategy 2: Application Decomposition and Orthogonal Mechanisms
+					</h1>
+					<p>
+						Yes, microservices! Buzzword bingo!
+					</p>
+				</section>
+
+				<section>
+					<img src="images/microservices.png"/>
+				</section>
+
+				<section>
+					<h1>
+						I mean, seriously, microservices!
+					</h1>
+					<p>
+						This is a 1999 paper and they already knew this and you're still asking yourself if you should use them or not.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Why application decomposition?
+					</h1>
+					<p>
+						Push complexity to where it actually needs to live. One piece of the app can live as an AP system with an expiration based cache? Then build it like that!
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Orthogonal mechanisms
+					</h1>
+					<p>
+						Failure detection and restarts? Make it orthogonal. Service discovery? Make it orthogonal. Load balancing? Make it orthogonal.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						5.1. Programming With Orthogonal Mechanisms
+					</h1>
+					<p>
+						Running on AWS with Elastic Load Balancer, Auto-Scaling groups, health checks and auto-termination? You might be already doing this!
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						5.2. Related Uses of Orthogonal Mechanisms
+					</h1>
+					<p>
+						Even systems that were not originally made to be reliable can be made scalable by placing a "reliable" interface on top of them that provides these characteristics, like <a href="https://github.com/Netflix/Hystrix">Netflix's Hystrix</a>.
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						6. Discussion and Research Agenda
+					</h1>
+					<p>
+
+					</p>
+				</section>
+
+				<section>
+					<h1>
+						Questions?
+					</h1>
+				</section>
+
+				<section>
+					<h1>
+						Thanks!
+					</h1>
 				</section>
 
 			</div>
