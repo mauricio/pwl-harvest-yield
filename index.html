@@ -127,7 +127,8 @@
 					</p>
 				</section>
 
-				<section data-background="images/cap-principles.png">
+				<section>
+					<img src="images/cap-principles.png"/>
 				</section>
 
 				<section>
@@ -144,7 +145,7 @@
 						CA but not P
 					</h1>
 					<p>
-						Most distributed databases. MongoDB, ElasticSearch, Redis and others, all fall into this category. If you get a network partition, the smaller side of the partition stops working as it won't be able to elect a master.
+						Most distributed databases. MongoDB, ElasticSearch, Redis and others, all fall into this category. If you get a network partition, the smaller side of the partition stops working as it won't be able to elect a master. Or you get a split-brain. And then you're DOOMED.
 					</p>
 				</section>
 
@@ -153,7 +154,7 @@
 						CP but not A
 					</h1>
 					<p>
-						The system goes into a read-only (or unavailable) mode to prevent inconsistencies when the partition heals.
+						The system goes into a read-only (or unavailable) mode to prevent inconsistencies until the partition heals.
 					</p>
 				</section>
 
@@ -253,7 +254,7 @@
 						Embrace the probabilities
 					</h1>
 					<p>
-						What are your data hot spots? Can you replicate them to provide better harvest? Can you distribute your replicas across availability zones so that one zone failing does not make reduce harvest drastically?
+						What are your data hot spots? Can you replicate them to provide better harvest? Can you distribute your replicas across availability zones so that one zone failing does not  reduce harvest drastically?
 					</p>
 				</section>
 
@@ -329,7 +330,7 @@
 						Are we there yet?
 					</h1>
 					<p>
-						Unfortunately, some of the calls for research here are still unanswered for, specially the programming model that provides first-class abstractions for manupulating degraded results. So far, most of the solutions have been ad-hoc and application specific. 
+						Unfortunately, some of the calls for research here are still unanswered for, specially the programming model that provides first-class abstractions for manupulating degraded results. So far, most of the solutions have been ad-hoc and application specific.
 					</p>
 				</section>
 
